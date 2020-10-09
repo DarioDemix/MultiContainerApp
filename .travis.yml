@@ -1,3 +1,4 @@
+language: generic 
 sudo: required
 sevices:
     - docker
@@ -6,7 +7,7 @@ before_install:
     - docker build -t dariodemix/multicontainerapp-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true dariodemix/multicontainerapp-test npm run test
+    - docker run -e CI=true dariodemix/multicontainerapp-test npm test
 
 after_success:
     - docker build -t dariodemix/multi-client -f ./client/Dockerfile.prod ./client
