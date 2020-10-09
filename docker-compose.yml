@@ -10,10 +10,13 @@ services:
         depends_on: 
             - api
             - client
+        environment: 
+            - CLIENT_PORT=${CLIENT_PORT}
+            - API_PORT=${API_PORT}
     postgres:
         image: 'postgres:latest'
         environment:
-            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     redis:
         image: 'redis:latest'
     api:
@@ -26,13 +29,14 @@ services:
         depends_on:
             - postgres
         environment: 
-            - REDIS_HOST=redis
-            - REDIS_PORT=6379
-            - PGUSER=postgres
-            - PGHOST=postgres
-            - PGDATABASE=postgres
-            - PGPASSWORD=postgres_password
-            - PGPORT=5432
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=${REDIS_PORT}
+            - PGUSER=${PGUSER}
+            - PGHOST=${PGHOST}
+            - PGDATABASE=${PGDATABASE}
+            - PGPASSWORD=${PGPASSWORD}
+            - PGPORT=${PGPORT}
+            - API_PORT=${API_PORT}
     client:
         stdin_open: true
         build:
@@ -47,8 +51,8 @@ services:
           context: ./worker
         volumes: 
             - /app/node_modules
-            - ./worker/src:/app
+            - ./worker:/app
         environment:
-            - REDIS_HOST=redis
-            - REDIS_PORT=6379
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT={REDIS_PORT}
 

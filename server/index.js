@@ -19,6 +19,7 @@ const pgClient = new Pool({
     port: keys.pgPort
 });
 pgClient.on('connect', () => {
+    console.log("onConnect");
     pgClient
       .query('CREATE TABLE IF NOT EXISTS values (number INT)')
       .catch((err) => console.log(err));
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/values/all', async (req, res) => {
+    console.log("values/all");
     const values = await pgClient.query('SELECT * FROM values');
 
     res.send(values.rows);
@@ -54,7 +56,7 @@ app.get('/values/current', async (req, res) => {
 app.post('/values', async (req, res) =>{
     const index = req.body.index;
 
-    if (parseInt(int) > 40) {
+    if (parseInt(index) > 40) {
         return res.status(422).send('Index too high');
     }
 
@@ -65,6 +67,6 @@ app.post('/values', async (req, res) =>{
     res.send({ working: true });
 });
 
-app.listen(keys.appPort, err => {
+app.listen(keys.apiPort, err => {
     console.log(`App linstening on port ${keys.appPort}`);
 });
