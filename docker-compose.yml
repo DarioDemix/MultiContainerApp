@@ -40,8 +40,10 @@ services:
     client:
         stdin_open: true
         build:
-            dockerfile: Dockerfile.dev
+            dockerfile: Dockerfile.prod
             context: ./client
+        environment: 
+            - CLIENT_PORT=${CLIENT_PORT}
         volumes:
             - /app/node_modules
             - ./client:/app

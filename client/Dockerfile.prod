@@ -6,8 +6,8 @@ COPY ./ ./
 RUN npm run build
 
 FROM nginx
-EXPOSE ${CLIENT_PORT}
-ADD ./default.conf /etc/nginx/conf.d/default.template
+EXPOSE $CLIENT_PORT
+ADD ./nginx/default.conf /etc/nginx/conf.d/default.template
 # Necessary command to replace environment variables in default.conf
-CMD sh -c "envsubst '\$CLIENT_PORT \$API_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+CMD sh -c "envsubst '\$CLIENT_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 COPY --from=myApp /app/build /usr/share/nginx/html
